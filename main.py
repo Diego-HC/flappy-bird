@@ -20,7 +20,7 @@ class Bird:
         self.accel = 1
 
     def checkRoofCeil(self):
-        if self.pos <= 0 or self.pos >= 720:
+        if self.pos <= 0 or self.pos + self.height >= 720:
             return True
         else:
             return False
@@ -91,12 +91,13 @@ if __name__ == '__main__':
             if event.type == pg.QUIT: game = False
         
         keys = pg.key.get_pressed()
-        if keys[pg.K_UP] and  not started:
+        if keys[pg.K_SPACE] and  not started:
             started = True
 
         if started:
             if bird.checkRoofCeil():
                 bird.reset(SCREEN_HEIGHT//2 - 25)
+                pipes = Pipes(screen, 600)
                 started = False
 
             if pipes.checkCollision(bird):
@@ -104,7 +105,7 @@ if __name__ == '__main__':
                 pipes = Pipes(screen, 600)
                 started = False
                 
-            if keys[pg.K_UP]:
+            if keys[pg.K_SPACE]:
                 bird.changeVel()
             
             screen.fill(WHITE)
