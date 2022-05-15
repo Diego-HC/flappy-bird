@@ -39,6 +39,7 @@ class Pipes:
         self.height = randint(200, 720 - 200)
         self.height2 = randint(200, 720 - 200)
         self.width = 150
+        self.score = 0
 
     def drawPipes(self):
         pg.draw.rect(self.screen, (0, 255, 0), pg.Rect(self.pos, 0, self.width, self.height))
@@ -47,12 +48,18 @@ class Pipes:
         pg.draw.rect(self.screen, (0, 255, 0), pg.Rect(self.pos + 400, 0, self.width, self.height2))
         pg.draw.rect(self.screen, (0, 255, 0), pg.Rect(self.pos + 400, self.height2 + 200, self.width, 720 - 200 - self.height2))
 
+    def drawScore(self):
+        scoreFont = pg.font.SysFont('Arial', 50)
+        screen.blit(scoreFont.render(str(self.score), True, (0, 0, 0)), [500//2, 100])
+        pg.display.flip()
+
     def movePipes(self):
         self.pos -= 5
         if self.pos + self.width <= 0:
             self.pos = self.pos + 400
             self.height = self.height2
             self.height2 = randint(200, 720 - 200)
+            self.score += 1
 
     def checkCollision(self, bird):
         if pg.Rect.colliderect(pg.Rect(self.pos, 0, self.width, self.height), pg.Rect(100, bird.pos, bird.width, bird.height)) or pg.Rect.colliderect(pg.Rect(self.pos, self.height + 200, self.width, 720 - 200 - self.height), pg.Rect(100, bird.pos, bird.width, bird.height)):
@@ -105,6 +112,7 @@ if __name__ == '__main__':
             pipes.movePipes()
             bird.drawBird()
             pipes.drawPipes()
+            pipes.drawScore()
 
         pg.display.flip()
         clock.tick(60)
