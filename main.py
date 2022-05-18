@@ -30,14 +30,14 @@ class Bird:
         self.speed += self.accel
 
     def changeVel(self):
-        self.speed = -10
+        self.speed = -14
 
 class Pipes:
     def __init__(self, screen, pos) -> None:
         self.screen = screen
         self.pos = pos
-        self.height = randint(200, 720 - 200)
-        self.height2 = randint(200, 720 - 200)
+        self.height = randint(20, 720 - 200)
+        self.height2 = randint(20, 720 - 200)
         self.width = 150
         self.score = 0
 
@@ -85,6 +85,7 @@ if __name__ == '__main__':
 
     game = True
     started = False
+    inputDelay = 0
 
     while game:
         for event in pg.event.get():
@@ -105,8 +106,9 @@ if __name__ == '__main__':
                 pipes = Pipes(screen, 600)
                 started = False
                 
-            if keys[pg.K_SPACE]:
+            if keys[pg.K_SPACE] and inputDelay <= 0:
                 bird.changeVel()
+                inputDelay = 10
             
             screen.fill(WHITE)
             bird.moveBird()
@@ -114,6 +116,8 @@ if __name__ == '__main__':
             bird.drawBird()
             pipes.drawPipes()
             pipes.drawScore()
+            
 
         pg.display.flip()
+        inputDelay -= 1
         clock.tick(60)
